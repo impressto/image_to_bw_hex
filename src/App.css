@@ -86,10 +86,21 @@ button, .file-input-button {
 
 .file-input-container {
   position: relative;
+  width: 100%;
+}
+
+.button-wrapper {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.file-input-wrapper {
+  position: relative;
   display: inline-block;
 }
 
-.file-input-container input[type="file"] {
+.file-input-wrapper input[type="file"] {
   position: absolute;
   left: 0;
   top: 0;

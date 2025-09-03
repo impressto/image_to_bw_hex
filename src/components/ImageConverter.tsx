@@ -20,6 +20,36 @@ export const ImageConverter = () => {
   const [hexOutput, setHexOutput] = useState<string>('');
   const [fileName, setFileName] = useState<string>('image');
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleExampleImage = () => {
+    // We can directly use the image data URL and process it
+    const img = new Image();
+    img.onload = () => {
+      // Create a temporary canvas to get the image data URL
+      const tempCanvas = document.createElement('canvas');
+      tempCanvas.width = img.width;
+      tempCanvas.height = img.height;
+      const ctx = tempCanvas.getContext('2d');
+      if (!ctx) return;
+      
+      ctx.drawImage(img, 0, 0);
+      const dataUrl = tempCanvas.toDataURL('image/png');
+      
+      // Set the robot filename
+      const robotFileName = 'robot';
+      setFileName(robotFileName);
+      setImagePreview(dataUrl);
+      processImage(dataUrl, robotFileName);
+    };
+
+    // Load the example image (robot.png from public folder)
+    img.src = '/homelab/robot.png';  // Path to the robot example image
+    img.onerror = () => {
+      console.error('Failed to load robot image');
+      alert('Failed to load robot image. Please try uploading your own image.');
+    };
+  };
 
   const getCleanFileName = (name: string) => {
     // Remove extension and any path
@@ -147,8 +177,13 @@ const unsigned char ${cleanName}[] PROGMEM = {
     <div className="image-converter">
       <div className="controls">
         <div className="file-input-container">
-          <div className="file-input-button">Choose Image</div>
-          <input type="file" accept="image/*" onChange={handleFileSelect} title=" " />
+          <div className="button-wrapper">
+            <div className="file-input-wrapper">
+              <div className="file-input-button">Choose Image</div>
+              <input type="file" accept="image/*" onChange={handleFileSelect} ref={fileInputRef} title=" " />
+            </div>
+            <button onClick={handleExampleImage} className="file-input-button" type="button">Use Example Image</button>
+          </div>
         </div>
         
         <div className="settings">
