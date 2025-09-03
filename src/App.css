@@ -18,6 +18,14 @@
   margin-bottom: 2rem;
 }
 
+.app-header {
+  max-width: 700px;
+  margin: 0 auto 3rem auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .image-converter {
   display: flex;
   flex-direction: column;
