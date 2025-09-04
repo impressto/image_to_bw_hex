@@ -169,8 +169,9 @@ select {
   margin-bottom: 2rem;
 }
 
-.button-group button {
-    line-height: 0;  
+.button-group button, .file-input-button {
+    line-height: 1.5;  
+    padding: 0.75rem;
 }
 
 
