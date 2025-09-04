@@ -20,7 +20,7 @@
 
 .app-header {
   max-width: 700px;
-  margin: 0 auto 3rem auto;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -95,9 +95,24 @@ button, .file-input-button {
   justify-content: center;
 }
 
+.button-wrapper.vertical {
+  flex-direction: column;
+  align-items: center;
+}
+
 .file-input-wrapper {
   position: relative;
   display: inline-block;
+}
+
+.file-input-wrapper .file-input-button {
+  text-transform: uppercase;
+}
+
+.button-wrapper.vertical .file-input-button,
+.button-wrapper.vertical .file-input-wrapper {
+  width: 200px;  /* Set a fixed width for consistent button sizing */
+  box-sizing: border-box;
 }
 
 .file-input-wrapper input[type="file"] {

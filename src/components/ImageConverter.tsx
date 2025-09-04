@@ -255,7 +255,7 @@ const unsigned char ${cleanName}[] PROGMEM = {
     <div className="image-converter">
       <div className="controls">
         <div className="file-input-container">
-          <div className="button-wrapper">
+          <div className="button-wrapper vertical">
             <div className="file-input-wrapper">
               <div className="file-input-button">Choose Image</div>
               <input type="file" accept="image/*" onChange={handleFileSelect} ref={fileInputRef} title=" " />
