@@ -23,32 +23,53 @@ export const ImageConverter = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleExampleImage = () => {
-    // We can directly use the image data URL and process it
-    const img = new Image();
-    img.onload = () => {
-      // Create a temporary canvas to get the image data URL
-      const tempCanvas = document.createElement('canvas');
-      tempCanvas.width = img.width;
-      tempCanvas.height = img.height;
-      const ctx = tempCanvas.getContext('2d');
-      if (!ctx) return;
+    // Create a simple example image programmatically (240x240 pixels)
+    const canvas = document.createElement('canvas');
+    canvas.width = 240;
+    canvas.height = 240;
+    const ctx = canvas.getContext('2d');
+    
+    if (ctx) {
+      // Fill with white background
+      ctx.fillStyle = 'white';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
       
-      ctx.drawImage(img, 0, 0);
-      const dataUrl = tempCanvas.toDataURL('image/png');
+      // Draw a simple monochrome pattern
+      ctx.fillStyle = 'black';
       
-      // Set the robot filename
-      const robotFileName = 'robot';
-      setFileName(robotFileName);
+      // Draw a border
+      ctx.lineWidth = 10;
+      ctx.strokeStyle = 'black';
+      ctx.strokeRect(20, 20, 200, 200);
+      
+      // Draw a simple Arduino-like shape
+      ctx.fillRect(60, 60, 120, 40);  // Top bar
+      ctx.fillRect(60, 140, 120, 40); // Bottom bar
+      ctx.fillRect(90, 100, 20, 40);  // Middle connector left
+      ctx.fillRect(130, 100, 20, 40); // Middle connector right
+      
+      // Text
+      ctx.font = 'bold 20px Arial';
+      ctx.textAlign = 'center';
+      ctx.fillText('Arduino', 120, 85);
+      
+      // Generate pins
+      for (let i = 0; i < 8; i++) {
+        ctx.fillRect(50 + i * 20, 190, 10, 30);
+      }
+      
+      // Get the data URL from the canvas
+      const dataUrl = canvas.toDataURL('image/png');
+      
+      // Set the example filename
+      const exampleFileName = 'example';
+      setFileName(exampleFileName);
       setImagePreview(dataUrl);
-      processImage(dataUrl, robotFileName);
-    };
-
-    // Load the example image (robot.png from public folder)
-    img.src = '/homelab/robot.png';  // Path to the robot example image
-    img.onerror = () => {
-      console.error('Failed to load robot image');
-      alert('Failed to load robot image. Please try uploading your own image.');
-    };
+      processImage(dataUrl, exampleFileName);
+    } else {
+      console.error('Failed to create canvas context');
+      alert('Failed to create example image. Please try uploading your own image.');
+    }
   };
 
   const getCleanFileName = (name: string) => {
