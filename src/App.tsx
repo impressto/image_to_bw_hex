@@ -8,7 +8,13 @@ export function App() {
         <h2>Image to Hex Converter</h2>
         <h2>Generate C code from BMP files for Monochrome displays.</h2>
         <p>
-          This tool converts a black and white BMP image into a C array formatted for use with monochrome displays, such as OLEDs or e-ink screens. It supports 1-bit BMP images and outputs the pixel data in a format compatible with libraries like Adafruit GFX.
+        This tool help with embedding logos, icons, or custom graphics in your microcontroller projects.
+        </p>
+        <p>
+        It converts any image into a 1-bit black-and-white BMP and generates the corresponding C array for use with monochrome displays. 
+        </p>
+        <p>
+        The output is optimized for a wide range of display types—including OLEDs and e-ink screens—and is fully compatible with popular graphics libraries such as Adafruit GFX. 
         </p>
         <p>Source code for this tool: <a href="https://github.com/impressto/image_to_bw_hex" target="_blank" rel="noopener noreferrer">https://github.com/impressto/image_to_bw_hex</a></p>     
       </div>

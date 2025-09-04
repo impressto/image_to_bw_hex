@@ -299,9 +299,11 @@ const unsigned char ${cleanName}[] PROGMEM = {
         </div>
       </div>
 
-      <div className="preview">
-        <canvas ref={canvasRef} style={{ border: '1px solid #ccc' }} />
-      </div>
+      {imagePreview && (
+        <div className="preview">
+          <canvas ref={canvasRef} style={{ border: '1px solid #ccc' }} />
+        </div>
+      )}
 
       {hexOutput && (
         <div className="output-section">

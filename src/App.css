@@ -15,7 +15,7 @@
 
 .app p {
   color: #666;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
 }
 
 .app-header {
@@ -111,7 +111,7 @@ button, .file-input-button {
 
 .button-wrapper.vertical .file-input-button,
 .button-wrapper.vertical .file-input-wrapper {
-  width: 200px;  /* Set a fixed width for consistent button sizing */
+  width: 300px;  /* Set a fixed width for consistent button sizing */
   box-sizing: border-box;
 }
 
