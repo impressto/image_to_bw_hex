@@ -1,4 +1,3 @@
-# New tools for converting images to BW hex codes
 
 # image\_to\_bw\_hex
 
