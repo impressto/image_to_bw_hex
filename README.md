@@ -1,5 +1,5 @@
 
-# image\_to\_bw\_hex
+# Image to Black and White Hex Code Generator
 
 A lightweight tool to convert images into black-and-white (monochrome) hexadecimal arrays for easy integration into C-based microcontroller projects.
 
