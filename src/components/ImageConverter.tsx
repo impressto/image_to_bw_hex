@@ -33,23 +33,16 @@ export const ImageConverter = () => {
       // Path based on Vite's base configuration
       `${import.meta.env.BASE_URL}robot.png`
     ];
-
-    // Log the current URL for debugging purposes
-    console.log('Current page URL:', window.location.href);
-    console.log('Current page pathname:', window.location.pathname);
-    console.log('Current page origin:', window.location.origin);
     
     const tryLoadImage = (pathIndex = 0) => {
       if (pathIndex >= possiblePaths.length) {
         // Fall back to the programmatic image creation if all paths fail
-        createProgrammaticImage();
-        return;
+        // we can probably scrap this and just throw an error
+        throw new Error('Failed to load example image');
       }
 
       const img = new Image();
       img.onload = () => {
-        console.log(`Successfully loaded robot.png from: ${possiblePaths[pathIndex]}`);
-        
         // Create a temporary canvas to get the image data URL
         const tempCanvas = document.createElement('canvas');
         tempCanvas.width = img.width;
@@ -74,55 +67,6 @@ export const ImageConverter = () => {
       };
       
       img.src = possiblePaths[pathIndex];
-    };
-
-    const createProgrammaticImage = () => {
-      // This is our fallback in case all image loading attempts fail
-      console.warn('All attempts to load robot.png failed. Creating a programmatic image instead.');
-      
-      const canvas = document.createElement('canvas');
-      canvas.width = 240;
-      canvas.height = 240;
-      const ctx = canvas.getContext('2d');
-      
-      if (ctx) {
-        // Fill with white background
-        ctx.fillStyle = 'white';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        
-        // Draw a simple robot-like pattern
-        ctx.fillStyle = 'black';
-        
-        // Robot head
-        ctx.beginPath();
-        ctx.arc(120, 100, 60, 0, Math.PI * 2);
-        ctx.fill();
-        
-        // Eyes
-        ctx.fillStyle = 'white';
-        ctx.beginPath();
-        ctx.arc(100, 80, 15, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.beginPath();
-        ctx.arc(140, 80, 15, 0, Math.PI * 2);
-        ctx.fill();
-        
-        // Body
-        ctx.fillStyle = 'black';
-        ctx.fillRect(80, 160, 80, 60);
-        
-        // Get the data URL from the canvas
-        const dataUrl = canvas.toDataURL('image/png');
-        
-        // Set the example filename
-        const robotFileName = 'robot';
-        setFileName(robotFileName);
-        setImagePreview(dataUrl);
-        processImage(dataUrl, robotFileName);
-      } else {
-        console.error('Failed to create canvas context');
-        alert('Failed to create example image. Please try uploading your own image.');
-      }
     };
 
     // Start trying to load the image from different possible paths
