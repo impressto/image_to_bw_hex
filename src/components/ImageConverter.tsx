@@ -2,7 +2,6 @@ import { useState, useRef } from 'react';
 import type { ChangeEvent } from 'react';
 
 interface ConversionSettings {
-  backgroundColor: 'white' | 'black' | 'transparent';
   invertColors: boolean;
   scale: 'fit' | 'stretch' | 'center';
   conversionFunction: 'horizontal1bit' | 'vertical1bit';
@@ -10,7 +9,6 @@ interface ConversionSettings {
 
 export const ImageConverter = () => {
   const [settings, setSettings] = useState<ConversionSettings>({
-    backgroundColor: 'white',
     invertColors: false,
     scale: 'fit',
     conversionFunction: 'horizontal1bit'
@@ -114,12 +112,6 @@ export const ImageConverter = () => {
       canvas.width = img.width;
       canvas.height = img.height;
 
-      // Draw image with current settings
-      if (settings.backgroundColor !== 'transparent') {
-        ctx.fillStyle = settings.backgroundColor;
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-      }
-
       ctx.drawImage(img, 0, 0);
 
       // Apply black and white conversion
@@ -133,6 +125,46 @@ export const ImageConverter = () => {
       }
 
       if (settings.invertColors) {
+        for (let i = 0; i < data.length; i += 4) {
+          data[i] = 255 - data[i];
+          data[i + 1] = 255 - data[i + 1];
+          data[i + 2] = 255 - data[i + 2];
+        }
+      }
+
+      ctx.putImageData(imageData, 0, 0);
+      generateHexOutput(newFileName);
+    };
+    img.src = dataUrl;
+  };
+
+  const processImageWithSettings = (dataUrl: string, newFileName?: string, customSettings?: ConversionSettings) => {
+    const settingsToUse = customSettings || settings;
+    const img = new Image();
+    img.onload = () => {
+      const canvas = canvasRef.current;
+      if (!canvas) return;
+
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
+
+      // Set canvas size to match image
+      canvas.width = img.width;
+      canvas.height = img.height;
+
+      ctx.drawImage(img, 0, 0);
+
+      // Apply black and white conversion
+      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      const data = imageData.data;
+      
+      for (let i = 0; i < data.length; i += 4) {
+        const avg = (data[i] + data[i + 1] + data[i + 2]) / 3;
+        const value = avg > 128 ? 255 : 0;
+        data[i] = data[i + 1] = data[i + 2] = value;
+      }
+
+      if (settingsToUse.invertColors) {
         for (let i = 0; i < data.length; i += 4) {
           data[i] = 255 - data[i];
           data[i + 1] = 255 - data[i + 1];
@@ -210,31 +242,18 @@ const unsigned char ${cleanName}[] PROGMEM = {
         
         <div className="settings">
           <label>
-            Background:
-            <select
-              value={settings.backgroundColor}
-              onChange={(e) => setSettings({
-                ...settings,
-                backgroundColor: e.target.value as ConversionSettings['backgroundColor']
-              })}
-            >
-              <option value="white">White</option>
-              <option value="black">Black</option>
-              <option value="transparent">Transparent</option>
-            </select>
-          </label>
-
-          <label>
             <input
               type="checkbox"
               checked={settings.invertColors}
               onChange={(e) => {
-                setSettings({
+                const newSettings = {
                   ...settings,
                   invertColors: e.target.checked
-                });
+                };
+                setSettings(newSettings);
                 if (imagePreview) {
-                  processImage(imagePreview, fileName);
+                  // Process image with the new settings
+                  processImageWithSettings(imagePreview, fileName, newSettings);
                 }
               }}
             />
